@@ -23,7 +23,7 @@ export default class RenderUtil {
       
       let gfxTexture = texture.getGFXTexture();
       let gfxDevice = texture['_getGFXDevice']();
-      let bufferViews = [];
+      let bufferViews: Uint8Array[] = [];
       let region = new gfx.BufferTextureCopy();
 
       region.texOffset.x = tx;
