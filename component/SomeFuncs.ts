@@ -1,9 +1,15 @@
-import {Component, RenderTexture, view, UITransform, Camera, Node} from 'cc';
+import {Component, RenderTexture, view, UITransform, Camera, Node, Color, Sprite, tween, color, ImageAsset, Texture2D} from 'cc';
 
-class SetSpineSlot extends Component {
+class SomeFuncs extends Component {
   private rt: RenderTexture;
   private copyCamera: Camera;
   private _buffer: Uint8Array;
+  /**
+   * 
+   * @param captureNode 截图节点
+   * @param cb 完成回调
+   * @param setSlotTexture 
+   */
   changeTexture(captureNode: Node, cb?: () => void, setSlotTexture: boolean = true) {
     this.rt = new RenderTexture();
     this.rt.reset({width: Math.floor(view.getVisibleSize().width), height: Math.floor(view.getVisibleSize().height)});
@@ -46,5 +52,22 @@ class SetSpineSlot extends Component {
       this.copyCamera.targetTexture = null;
       cb && cb.call(this);
     }, 0);
-  } 
+  }
+  
+  
+  private tempColor: Color = color(255, 255, 255, 255);
+  private beChangedSp: Sprite;
+  /**
+   * tween颜色
+   */
+  tweenColor() {
+    const duraTime = 0.5;
+    tween(this.tempColor)
+    .to(duraTime, {g: 50, b: 50}, {onUpdate: () => this.beChangedSp.color = this.tempColor})
+    .to(duraTime, {g: 50, b: 50}, {onUpdate: () => this.beChangedSp.color = this.tempColor})
+    .to(duraTime, {g: 50, b: 50}, {onUpdate: () => this.beChangedSp.color = this.tempColor}) 
+    .union()
+    .repeatForever()
+    .start();
+  }
 }
