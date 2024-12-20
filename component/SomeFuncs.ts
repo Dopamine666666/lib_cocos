@@ -70,4 +70,16 @@ class SomeFuncs extends Component {
     .repeatForever()
     .start();
   }
+
+  /**
+   * 获取节点世界坐标系下的包围盒，不包含子节点
+   * */ 
+  GetSelfBoundingBox(node: Node) {
+    const localBoundingBox = node.getComponent(UITransform).getBoundingBox();
+    let worldMatrix: Mat4 = new Mat4();
+    node.parent.getWorldMatrix(worldMatrix);
+    let worldBoundingBox: Rect = new Rect();
+    worldBoundingBox = localBoundingBox.transformMat4(worldMatrix);
+    return worldBoundingBox;
+  }
 }
