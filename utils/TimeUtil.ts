@@ -45,4 +45,30 @@ export default class TimeUtil {
     const hourString = (hour == 0 && !showHours) ? '' : `${hour.toString().padStart(2, '0')}${separator}`;
     return `${hourString}${minute.toString().padStart(2, '0')}${separator}${second.toString().padStart(2, '0')}`;
   }
+
+  
+  public static formatTimestamp(timestamp: number, format: string = 'yyyy-MM-dd hh:mm:ss'): string {
+    const date = new Date(timestamp);
+    const map: {[k: string]: number } = {
+      'M+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'm+': date.getMinutes(),
+      's+': date.getSeconds(),
+      'q+': Math.floor((date.getMonth() + 3) / 3),
+      'S': date.getMilliseconds()
+    };
+    if (/(y+)/.test(format)) {
+      format = format.replace(RegExp.$1, (date.getFullYear() + '').substring(4 - RegExp.$1.length));
+    }
+    for (let k in map) {
+      if (new RegExp(`(${k})`).test(format)) {
+        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? map[k].toString() : ('00' + map[k]).substring(('' + map[k]).length));
+      }
+    }
+    return format;
+  }
 }
+
+const str = TimeUtil.formatTimestamp(Date.now());
+console.log(str);
